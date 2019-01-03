@@ -17,7 +17,7 @@ import com.techguy.application.repository.UserRepository;
 
 @RestController
 @RequestMapping("/login")
-@CrossOrigin("http://localhost:4200")
+//@CrossOrigin("http://localhost:4200")
 public class LoginController {
 
 	@Autowired

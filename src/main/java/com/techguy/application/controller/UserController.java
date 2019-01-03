@@ -23,7 +23,7 @@ import com.techguy.application.service.UserService;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin("http://localhost:4200")
+//@CrossOrigin("http://localhost:4200")
 public class UserController {
 
 	private UserService userService;
@@ -63,12 +63,12 @@ public class UserController {
 		return userService.deleteAllUsers();
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/get")
+	@RequestMapping(method = RequestMethod.GET, value = "/list")
 	public List<User> getAllUsers() {
 		return userService.getAllUsers();
 	}
 	
-	@RequestMapping(method = RequestMethod.GET , value = "/get/{id}")
+	@RequestMapping(method = RequestMethod.GET , value = "/list/{id}")
 	public User getUser(@PathVariable("id") int id) {
 		return userService.getUser(id);
 	}
@@ -78,58 +78,58 @@ public class UserController {
 		return userService.updateUser(id, user);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/{username}")
-	public ResponseEntity<User> findByUserName(@PathVariable("username") String username) {
+	@RequestMapping(method = RequestMethod.POST, value = "/username")
+	public ResponseEntity<User> findByUserName( @Valid @RequestBody User userDetails) {
 		User user = null;
 		try {
-			user = userRepository.findByUserName(username);
+			user = userRepository.findByUserName(userDetails.getUserName());
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		if (user.getUserName().equals(username))
+		if (user.getUserName().equals(userDetails.getUserName()))
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/{confirmationToken}")
-	public ResponseEntity<User> findByConfirmationToken(@PathVariable("confirmationToken") String confirmationToken) {
+	@RequestMapping(method = RequestMethod.POST, value = "/confirmationToken")
+	public ResponseEntity<User> findByConfirmationToken(@Valid @RequestBody User userDetails) {
 		User user = null;
 		try {
-			user = userRepository.findByConfirmationToken(confirmationToken);
+			user = userRepository.findByConfirmationToken(userDetails.getConfirmationToken());
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		if (user.getConfirmationToken().equals(confirmationToken))
+		if (user.getConfirmationToken().equals(userDetails.getConfirmationToken()))
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	@RequestMapping(method = RequestMethod.GET , value = "/{email}")
-	public ResponseEntity<User> findByEmail(@PathVariable("email") String email) {
+	@RequestMapping(method = RequestMethod.GET , value = "/email")
+	public ResponseEntity<User> findByEmail(@Valid @RequestBody User userDetails) {
 		User user = null;
 		try {
-			user = userRepository.findByEmail(email);
+			user = userRepository.findByEmail(userDetails.getEmail());
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		if (user.getEmail().equals(email)) {
+		if (user.getEmail().equals(userDetails.getEmail())) {
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 
-	@RequestMapping(method = RequestMethod.GET , value = "/{password}")
-	public ResponseEntity<User> findByPassword(@PathVariable("password") String password) {
+	@RequestMapping(method = RequestMethod.GET , value = "/password")
+	public ResponseEntity<User> findByPassword(@Valid @RequestBody User userDetails) {
 		User user = null;
 		try {
-			user = userRepository.findByPassword(password);
+			user = userRepository.findByPassword(userDetails.getPassword());
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		if (user.getPassword().equals(password)) {
+		if (user.getPassword().equals(userDetails.getPassword())) {
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
